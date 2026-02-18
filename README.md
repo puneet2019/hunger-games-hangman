@@ -20,4 +20,4 @@ make stop    # stops the server
 
 ## Credits
 
-Built with help from [Saurabh](https://github.com/rajguru7).
+OG credits: [Saurabh](https://github.com/rajguru7).
