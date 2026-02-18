@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Hunger Games - Hangman</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="embers" id="embers"></div>
+
+    <div class="container">
+        <header>
+            <h1>THE HUNGER GAMES</h1>
+            <h2 class="subtitle">HANGMAN</h2>
+            <p class="tagline">"May the odds be ever in your favor"</p>
+        </header>
+
+        <main id="game-area">
+            <div class="game-layout">
+                <div class="canvas-wrapper">
+                    <canvas id="hangman-canvas" width="220" height="260"></canvas>
+                </div>
+                <div class="info-panel">
+                    <div class="hint" id="hint"></div>
+                    <div class="word-display" id="word-display"></div>
+                    <div class="stats">
+                        <span id="guesses-left"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="keyboard" id="keyboard"></div>
+        </main>
+
+        <div id="result-screen" class="hidden">
+            <div id="lose-screen" class="hidden">
+                <div class="result-icon">&#x1F480;</div>
+                <h2>The Odds Were Not In Your Favor</h2>
+                <p class="reveal">The word was: <strong id="reveal-word"></strong></p>
+                <p class="restart-msg">Returning to the arena...</p>
+            </div>
+
+            <div id="win-screen" class="hidden">
+                <div class="result-icon">&#x1F3C6;</div>
+                <h2>Victor of the Games!</h2>
+                <div id="timer-section" class="hidden">
+                    <p class="timer-label">Something special awaits in...</p>
+                    <div class="countdown" id="countdown">20</div>
+                </div>
+                <div id="music-section" class="hidden">
+                    <div class="hearts" id="hearts"></div>
+                    <p class="music-msg">&#x1F3B5; This one's for you &#x1F3B5;</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

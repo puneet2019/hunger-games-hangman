@@ -1,0 +1,411 @@
+/* ============================================
+   THE HUNGER GAMES - HANGMAN
+   ============================================ */
+
+:root {
+    --gold: #d4af37;
+    --gold-light: #f5d76e;
+    --fire-red: #e25822;
+    --fire-orange: #ff8c00;
+    --dark-bg: #0a0a0f;
+    --dark-panel: #14141f;
+    --dark-card: #1a1a2e;
+    --text: #e8e8e8;
+    --text-dim: #8888aa;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Raleway', sans-serif;
+    background: radial-gradient(ellipse at center bottom, #1a0a00 0%, var(--dark-bg) 60%);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+}
+
+/* ---- Ember Particles ---- */
+
+.embers {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.ember {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    opacity: 0;
+    animation: float-up linear infinite;
+}
+
+@keyframes float-up {
+    0% {
+        opacity: 0;
+        transform: translateY(100vh) scale(0.3);
+    }
+    10% {
+        opacity: 0.9;
+    }
+    80% {
+        opacity: 0.4;
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-10vh) scale(0.8);
+    }
+}
+
+/* ---- Container ---- */
+
+.container {
+    position: relative;
+    z-index: 1;
+    max-width: 700px;
+    width: 95%;
+    padding: 30px 20px;
+    text-align: center;
+}
+
+/* ---- Header ---- */
+
+header {
+    margin-bottom: 10px;
+}
+
+header h1 {
+    font-family: 'Cinzel', serif;
+    font-weight: 900;
+    font-size: 2.4rem;
+    color: var(--gold);
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+    letter-spacing: 4px;
+}
+
+header .subtitle {
+    font-family: 'Cinzel', serif;
+    font-weight: 400;
+    font-size: 1.15rem;
+    color: var(--fire-red);
+    letter-spacing: 8px;
+    margin-top: 4px;
+}
+
+header .tagline {
+    font-style: italic;
+    color: var(--text-dim);
+    margin-top: 8px;
+    font-size: 0.9rem;
+}
+
+/* ---- Game Layout ---- */
+
+.game-layout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    margin: 25px 0 20px;
+    flex-wrap: wrap;
+}
+
+.canvas-wrapper {
+    background: var(--dark-panel);
+    border-radius: 12px;
+    padding: 10px;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+canvas {
+    display: block;
+}
+
+.info-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.hint {
+    background: var(--dark-card);
+    padding: 10px 20px;
+    border-radius: 8px;
+    border-left: 3px solid var(--gold);
+    font-size: 0.9rem;
+    color: var(--gold-light);
+    max-width: 260px;
+}
+
+/* ---- Word Display ---- */
+
+.word-display {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.letter {
+    font-family: 'Cinzel', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    width: 40px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 3px solid var(--text-dim);
+    color: var(--text);
+    transition: all 0.3s ease;
+}
+
+.letter.revealed {
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+}
+
+.letter.space {
+    border-bottom: none;
+    width: 20px;
+}
+
+.stats {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+}
+
+/* ---- Keyboard ---- */
+
+.keyboard {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+    max-width: 520px;
+    margin: 0 auto;
+}
+
+.key {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 1rem;
+    width: 42px;
+    height: 42px;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    background: var(--dark-card);
+    color: var(--text);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.key:hover:not(:disabled) {
+    background: rgba(212, 175, 55, 0.15);
+    border-color: var(--gold);
+    transform: translateY(-2px);
+}
+
+.key:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.key.correct {
+    background: rgba(34, 139, 34, 0.3);
+    border-color: #228b22;
+    color: #4caf50;
+}
+
+.key.wrong {
+    background: rgba(220, 20, 60, 0.2);
+    border-color: #dc143c;
+    color: #dc143c;
+    opacity: 0.5;
+}
+
+.key:disabled {
+    cursor: default;
+}
+
+/* ---- Shake ---- */
+
+.shake {
+    animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+/* ---- Result Screens ---- */
+
+.hidden {
+    display: none !important;
+}
+
+#result-screen {
+    margin-top: 30px;
+}
+
+.result-icon {
+    font-size: 4rem;
+    margin-bottom: 15px;
+}
+
+#lose-screen h2,
+#win-screen h2 {
+    font-family: 'Cinzel', serif;
+    font-size: 1.7rem;
+    color: var(--gold);
+    margin-bottom: 15px;
+}
+
+.reveal {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+}
+
+.reveal strong {
+    color: var(--fire-red);
+    letter-spacing: 3px;
+}
+
+.restart-msg {
+    color: var(--text-dim);
+    font-style: italic;
+    animation: pulse 1.5s infinite;
+}
+
+/* ---- Countdown Timer ---- */
+
+.timer-label {
+    color: var(--text-dim);
+    margin-bottom: 10px;
+}
+
+.countdown {
+    font-family: 'Cinzel', serif;
+    font-size: 5rem;
+    font-weight: 900;
+    color: var(--fire-red);
+    text-shadow: 0 0 30px rgba(226, 88, 34, 0.5);
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.05); }
+}
+
+/* ---- Music Section ---- */
+
+.music-msg {
+    font-size: 1.3rem;
+    color: var(--gold);
+    margin-top: 20px;
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from { text-shadow: 0 0 5px rgba(212, 175, 55, 0.3); }
+    to { text-shadow: 0 0 20px rgba(212, 175, 55, 0.7), 0 0 40px rgba(212, 175, 55, 0.3); }
+}
+
+/* ---- Floating Hearts ---- */
+
+.hearts {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 100;
+}
+
+.heart {
+    position: absolute;
+    opacity: 0;
+    animation: heart-float ease-in-out infinite;
+}
+
+@keyframes heart-float {
+    0% {
+        opacity: 0;
+        transform: translateY(100vh) rotate(0deg) scale(0.5);
+    }
+    15% {
+        opacity: 1;
+    }
+    85% {
+        opacity: 0.8;
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-20vh) rotate(45deg) scale(1.5);
+    }
+}
+
+/* ---- Responsive ---- */
+
+@media (max-width: 550px) {
+    header h1 {
+        font-size: 1.5rem;
+        letter-spacing: 2px;
+    }
+
+    header .subtitle {
+        font-size: 0.9rem;
+        letter-spacing: 5px;
+    }
+
+    .game-layout {
+        gap: 15px;
+    }
+
+    .letter {
+        font-size: 1.4rem;
+        width: 28px;
+        height: 38px;
+        gap: 5px;
+    }
+
+    .word-display {
+        gap: 5px;
+    }
+
+    .key {
+        width: 32px;
+        height: 34px;
+        font-size: 0.8rem;
+    }
+
+    .keyboard {
+        gap: 4px;
+    }
+
+    .countdown {
+        font-size: 3.5rem;
+    }
+
+    .hint {
+        font-size: 0.8rem;
+        padding: 8px 14px;
+    }
+}
