@@ -1,4 +1,4 @@
-.PHONY: start stop deploy
+.PHONY: start stop
 
 PORT ?= 8000
 PID_FILE := .server.pid
@@ -19,13 +19,3 @@ stop:
 		rm -f $(PID_FILE); \
 		echo "No server running."; \
 	fi
-
-deploy:
-	git add -A
-	git commit -m "Deploy to GitHub Pages" || true
-	git push origin main
-	gh api repos/{owner}/{repo}/pages -X PUT -f build_type=workflow -f source='{"branch":"main","path":"/"}' 2>/dev/null || \
-		gh api repos/{owner}/{repo}/pages -X POST -f build_type=legacy -f source='{"branch":"main","path":"/"}' 2>/dev/null || \
-		echo "Pages may already be configured. Check https://puneet2019.github.io/hunger-games-hangman/"
-	@echo ""
-	@echo "Site will be live at: https://puneet2019.github.io/hunger-games-hangman/"

@@ -16,7 +16,6 @@ A Hunger Games themed hangman game. Guess characters, places, and items from the
 ```bash
 make start   # starts a local server at http://localhost:8000
 make stop    # stops the server
-make deploy  # pushes to GitHub Pages
 ```
 
 ## Credits
