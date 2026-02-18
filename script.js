@@ -255,7 +255,7 @@ function lose() {
 
 function startCountdown() {
     $("timer-section").classList.remove("hidden");
-    let t = 20;
+    let t = 5;
     $("countdown").textContent = t;
 
     const iv = setInterval(() => {
